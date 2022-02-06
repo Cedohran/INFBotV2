@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class RandomActivity implements Runnable{
-    DiscordBot bot;
+    DiscordBotClient bot;
 
-    RandomActivity(DiscordBot bot) {
+    RandomActivity(DiscordBotClient bot) {
         this.bot = bot;
     }
 
@@ -20,7 +20,7 @@ public class RandomActivity implements Runnable{
             activities.addAll(bot.random_activity_list);
             Collections.shuffle(activities);
             String activity = activities.get(0);
-            bot.setBotActivity(Activity.ActivityType.PLAYING, activity);
+            bot.setClientActivity(Activity.ActivityType.PLAYING, activity);
             try {
                 Thread.sleep(100000);
             } catch (InterruptedException e) {

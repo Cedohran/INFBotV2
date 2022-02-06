@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.managers.Presence;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +14,7 @@ import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscordBot {
+public class DiscordBotClient {
     private JDA jda;
     private Presence presence;
     private Thread random_activity_thread;
@@ -26,15 +28,15 @@ public class DiscordBot {
      * Factory Method to create a bot instance with Discord REST API connection (wrapped in JDA by DV8FromTheWorld)
      * @param token The OAuth token for the Discord Bot Client
      */
-    public static DiscordBot create(String token) {
-        DiscordBot bot = new DiscordBot();
+    public static DiscordBotClient create(String token) {
+        DiscordBotClient bot = new DiscordBotClient();
         try {
             bot.jda = JDABuilder
                     .createDefault(token)
                     .addEventListeners(new ListenerAdapter() {
                         @Override
                         public void onReady(@NotNull ReadyEvent event) {
-                            System.out.println("API ready for token "+token);
+                            System.out.println("API ready");
                         }
                     })
                     .build();
@@ -44,18 +46,21 @@ public class DiscordBot {
             e.printStackTrace();
             return null;
         }
+        bot.jda.updateCommands().addCommands(Commands
+                .slash("echo", "tests the commands function")
+                .addOption(OptionType.STRING, "message", "message to echo")).queue();
         bot.presence = bot.jda.getPresence();
         return bot;
     }
 
-    //================== Bot Activity
+    //================== Client Activity
 
     /**
-     * Sets the Bot's activity
+     * Sets the Client's activity
      * @param activityType Sets what the Bot is doing (playing, listening ...)
      * @param activity The name of the Bot's activity
      */
-    public void setBotActivity(Activity.ActivityType activityType, String activity) {
+    public void setClientActivity(Activity.ActivityType activityType, String activity) {
         presence.setActivity(Activity.of(activityType, activity));
     }
 
