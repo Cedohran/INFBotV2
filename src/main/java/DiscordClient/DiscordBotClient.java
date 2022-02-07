@@ -46,9 +46,7 @@ public class DiscordBotClient {
             e.printStackTrace();
             return null;
         }
-        bot.jda.updateCommands().addCommands(Commands
-                .slash("echo", "tests the commands function")
-                .addOption(OptionType.STRING, "message", "message to echo")).queue();
+        bot.jda.updateCommands().queue();
         bot.presence = bot.jda.getPresence();
         return bot;
     }
@@ -76,5 +74,9 @@ public class DiscordBotClient {
 
     public void addEventListener(ListenerAdapter listener) {
         jda.addEventListener(listener);
+    }
+
+    public void addSlashCommand(){
+
     }
 }
