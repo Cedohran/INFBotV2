@@ -46,7 +46,9 @@ public class DiscordBotClient {
             e.printStackTrace();
             return null;
         }
-        bot.jda.updateCommands().queue();
+        /*bot.jda.updateCommands()
+                .addCommands(Commands.slash("echo", "echoes given text").addOption(OptionType.STRING, "message", "message to echo"))
+                .queue();*/
         bot.presence = bot.jda.getPresence();
         return bot;
     }
